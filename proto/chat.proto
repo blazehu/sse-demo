@@ -4,10 +4,13 @@ option go_package = "github.com/blazehu/sse-demo/server/apiclient/chat";
 package chat;
 
 import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
 
 service ChatService {
-  rpc Chat(stream Message) returns (stream Message) {
-    option (google.api.http).get = "/api/v1/stream/chat";
+  rpc Chat(google.protobuf.Empty) returns (stream Message) {
+    option (google.api.http) = {
+      get: "/api/v1/stream/chat"
+    };
   }
 }
 

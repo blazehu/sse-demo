@@ -5,6 +5,7 @@ import (
 	"github.com/blazehu/sse-demo/gen/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"io"
 	"log"
 	"time"
@@ -24,7 +25,7 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
 	defer cancel()
 
-	stream, err := c.Chat(ctx)
+	stream, err := c.Chat(ctx, &emptypb.Empty{})
 	if err != nil {
 		log.Fatalf("could not chat: %v", err)
 	}
@@ -37,6 +38,6 @@ func main() {
 		if err != nil {
 			log.Fatalf("failed to receive: %v", err)
 		}
-		log.Printf("Received message: %s", msg.Content)
+		log.Printf("Received message: %s", msg)
 	}
 }

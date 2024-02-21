@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/blazehu/sse-demo/gen/proto"
 	"google.golang.org/grpc"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"log"
 	"net"
 	"time"
@@ -14,13 +15,16 @@ type Server struct {
 }
 
 // Chat returns chat content
-func (s *Server) Chat(stream chat.ChatService_ChatServer) error {
+func (s *Server) Chat(_ *emptypb.Empty, stream chat.ChatService_ChatServer) error {
 	for {
-		msg := chat.Message{User: "blazehu", Content: time.Now().Format(time.RFC3339)}
+		msg := chat.Message{
+			User:    "blazehu",
+			Content: time.Now().Format(time.RFC3339),
+		}
 		if err := stream.Send(&msg); err != nil {
 			return err
 		}
-		time.Sleep(time.Second * 2)
+		time.Sleep(time.Second * 1)
 	}
 }
 
